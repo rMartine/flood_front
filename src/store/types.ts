@@ -18,8 +18,8 @@ export type InitializeFunctionParams = {
     cellPosition: CellPosition;
     newColor: CellColor;
 }
-
-export type InitializeFunction = (InitializeFunctionParams) => Promise<string>;
+// Declarre a function interface named InitializeFunction which arguments conform to the InitializeFunctionParams type and returns a Promise of type string
+export type InitializeFunction = (params: InitializeFunctionParams) => Promise<string>;
 
 export interface InitializeBtnProps {
     initialize: InitializeFunction;

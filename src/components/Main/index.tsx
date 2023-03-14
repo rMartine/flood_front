@@ -26,7 +26,7 @@ const Main = () => {
             return data.floodedGrid;
         } catch (error) {
             console.error('Error:', error);
-            return error.message;
+            return error as string;
         }
     };
 

@@ -12,7 +12,7 @@ const InitializeBtn = (props: InitializeBtnProps) => {
     return (
         <button
             className="initialize-btn"            
-            onClick={initialize}
+            onClick={() => initialize({ grid, cellPosition, newColor })}
         >
             Initialize
         </button>
