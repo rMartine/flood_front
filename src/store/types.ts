@@ -2,20 +2,28 @@ export type Cell = {
     color: string;
 }
 
-export type Grid = {
-    [key: number]: Cell[];
-}
+export type Grid = Cell[][];
 
 export type CellPosition = {
-    x: number;
-    y: number;
+    row: number;
+    col: number;
 }
 
-export type NewColor = {
+export type CellColor = {
     color: string;
 }
 
-// Initialize returns a string
+export type InitializeFunctionParams = {
+    grid: Grid;
+    cellPosition: CellPosition;
+    newColor: CellColor;
+}
+
+export type InitializeFunction = (InitializeFunctionParams) => Promise<string>;
+
 export interface InitializeBtnProps {
-    initialize: () => string;
+    initialize: InitializeFunction;
+    grid: Grid;
+    cellPosition: CellPosition;
+    newColor: CellColor;
 }
