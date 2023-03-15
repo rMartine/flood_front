@@ -16,11 +16,25 @@ const Grid = ({ setCoordinates, grid }: GridProps) => {
         if (!grid || !grid.length) {
             return {cellWidth: 0, cellHeight: 0};
         }
+
+        const cells = document.querySelectorAll('td');
+        let maxCellWidth = 0;
+        let maxCellHeight = 0;
+
+        cells.forEach(cell => {
+            const cellRect = cell.getBoundingClientRect();
+            maxCellWidth = Math.max(maxCellWidth, cellRect.width);
+            maxCellHeight = Math.max(maxCellHeight, cellRect.height);
+        });
+
         const {width, height} = gridSize;
-        const {rows, cols} = grid.length && grid[0].length ? {rows: grid.length, cols: grid[0].length} : {rows: 0, cols: 0};
-        const cellWidth = width / cols;
-        const cellHeight = height / rows;
-        return {cellWidth, cellHeight};        
+        const {rows, cols} = {rows: grid.length, cols: grid[0].length};
+        const cellWidth = Math.floor(width / cols);
+        const cellHeight = Math.floor(height / rows);
+        const maxWidth = Math.max(cellWidth, maxCellWidth);
+        const maxHeight = Math.max(cellHeight, maxCellHeight);
+
+        return {cellWidth: maxWidth, cellHeight: maxHeight};
     };
 
     useEffect(() => {
@@ -40,24 +54,23 @@ const Grid = ({ setCoordinates, grid }: GridProps) => {
             cell.style.width = `${cellWidth}px`;
             cell.style.height = `${cellHeight}px`;
         });
-    }, [gridSize]);
+    }, [gridSize, calculateCellSize]);
 
-    // If grid is undefined or empty, return an H1 element with the text "Loading..."
-    if (!grid || !grid.length) {
+    if (!grid || !grid?.length) {
         return <h1 className="text-2xl text-center">Loading...</h1>;
     }
 
     return (
-        <table className="mx-auto border-2 border-gray-500 rounded-md bg-white shadow-lg z-0">
+        <table className="h-[600px] w-[600px] m-auto mt-2 border-2 border-gray-500 rounded-md bg-white shadow-lg z-0">
             <tbody>
                 {grid.map((row, i) => (
                     <tr key={i}>
                         {row.map((cell, j) => (
                             <td
                                 key={j}
-                                className="w-10 h-10"
+                                className="cursor-pointer"
                                 style={{ backgroundColor: cell.color }}
-                                onClick={() => setCoordinates({row:i, col: j})}
+                                onClick={() => setCoordinates(i, j, true)}
                             />
                         ))}
                     </tr>

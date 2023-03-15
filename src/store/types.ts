@@ -38,6 +38,24 @@ export interface ColorPickerProps {
 }
 
 export interface GridProps {
-    setCoordinates: (coordinates: CellPosition) => void;
+    setCoordinates: (row: number, col: number, requestFloodedGrid: boolean) => void;
     grid: GridType | undefined;
+}
+
+export type ColorListItem = {
+    color: string;
+    tag: string;
+}
+
+export interface ColorListProps {
+    tag: string;
+    colors: ColorListItem[];
+    setColor: (colors: string) => void;
+    color: string;
+}
+
+export interface UpdatingGridPosition {
+    row: number;
+    col: number;
+    requestFloodedGrid: boolean;
 }
