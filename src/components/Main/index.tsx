@@ -85,6 +85,20 @@ const Main = () => {
                 .then((floodedGrid) => {
                     console.log('floodedGrid', floodedGrid);
                     setGrid(floodedGrid);
+                    /* if (Array.isArray(floodedGrid) && Array.isArray(floodedGrid[0]) && typeof floodedGrid[0][0] === 'string') {
+                        setGrid(floodedGrid);
+                    } else {
+                        console.log('floodedGrid is not of type GridType, building a new grid');
+                        const newGrid = [];
+                        for (let i = 0; i < numberOfRows; i++) {
+                            const row = [];
+                            for (let j = 0; j < numberOfCols; j++) {
+                                row.push({color: floodedGrid[i][j]} as CellColor);
+                            }
+                            newGrid.push(row);
+                        }
+                        setGrid(newGrid);
+                    } */
                     setUpdatingGridPosition({row: updatingGridPosition.row, col: updatingGridPosition.col, requestFloodedGrid: false});
                 })
                 .catch((error) => {

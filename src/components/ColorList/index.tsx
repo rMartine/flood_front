@@ -26,8 +26,8 @@ const ColorList = ({ tag, colors, setColor, color }: ColorListProps) => {
                 value={color}
             >
                 {colors.map((item) => (
-                    <option key={item.tag} value={item.color} className="w-full">
-                        <label className={`text-gray-700 text-xs font-bold bg-[${item.color}]`}>{item.tag}</label>
+                    <option key={item.tag} value={item.color} className={`w-full bg-[${item.color}]`}>
+                        {item.tag}
                     </option>
                 ))}
             </select>
