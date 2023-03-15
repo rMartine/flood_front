@@ -1,10 +1,3 @@
-// This control is a dropdown list that allows the user to select a color from a list of colors.
-// When initializing (first render) the color should be set to the a random item of the list.
-// No empty selection should be allowed.
-// Each item in the list show display an Hex color code, A color name and a smal square (h-5 x w-5) of that color.
-// The prop for this component is a function that takes a string as a parameter in the format of an hex color code.
-// The list of possible colors is defined in the src\store\constants.ts file as an enum.
-
 import React, { useState } from 'react';
 import { ColorListProps } from '../../store/types';
 
