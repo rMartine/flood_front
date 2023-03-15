@@ -33,3 +33,9 @@ export interface InitializeBtnProps {
     cellPosition: CellPosition;
     newColor: CellColor;
 }
+
+export interface ColorPickerProps {
+    tag: string;
+    color: string;
+    setColor: (color: string) => void;
+}
