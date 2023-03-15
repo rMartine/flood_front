@@ -2,7 +2,7 @@ export type Cell = {
     color: string;
 }
 
-export type Grid = Cell[][];
+export type GridType = Cell[][];
 
 export type CellPosition = {
     row: number;
@@ -13,13 +13,13 @@ export type CellColor = {
     color: string;
 }
 
-export type InitializeFunctionParams = {
-    grid: Grid;
+export type GetFloodedGridFunctionParams = {
+    grid: GridType;
     cellPosition: CellPosition;
     newColor: CellColor;
 }
 
-export type InitializeFunction = (params: InitializeFunctionParams) => Promise<string>;
+export type GetFloodedGridFunction = (params: GetFloodedGridFunctionParams) => Promise<GridType>;
 
 export interface CustomNumericalInputProps {
     tag: string;
@@ -27,15 +27,17 @@ export interface CustomNumericalInputProps {
     value: number;
 }
 
-export interface InitializeBtnProps {
-    initialize: InitializeFunction;
-    grid: Grid;
-    cellPosition: CellPosition;
-    newColor: CellColor;
+export interface CalculateGridBtnProps {
+    setCalculateFlag: () => void;
 }
 
 export interface ColorPickerProps {
     tag: string;
     color: string;
     setColor: (color: string) => void;
+}
+
+export interface GridProps {
+    setCoordinates: (coordinates: CellPosition) => void;
+    grid: GridType | undefined;
 }

@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import InitializeBtn from '../InitializeBtn';
+import CalculateGridBtn from '../CalculateGridBtn';
 import CustomNumericalInput from '../CustomNumericalInput';
-import { InitializeFunction, InitializeFunctionParams } from '../../store/types';
+import { CellPosition, CellColor, GridType, GetFloodedGridFunction, GetFloodedGridFunctionParams } from '../../store/types';
 import ColorPicker from '../ColorPicker';
+import Grid from '../Grid';
+
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
 
 const Main = () => {
 
     // TODO: Move this to a separate file or even better a saga.
-    const getFloodedGrid: InitializeFunction = async ({
+    const getFloodedGrid: GetFloodedGridFunction = async ({
         grid,
         cellPosition,
         newColor,
-    }: InitializeFunctionParams) => {
+    }: GetFloodedGridFunctionParams) => {
         try {
             const response = await fetch('http://localhost:5000/flood', {
                 method: 'POST',
@@ -33,35 +43,43 @@ const Main = () => {
             return error as string;
         }
     };
+    
+    const cellPosition: CellPosition = { row: 0, col: 0};
+    const [numberOfRows, setNumberOfRows] = useState(10);
+    const [numberOfCols, setNumberOfCols] = useState(10);
+    const [floodColor, setFloodColor] = useState(getRandomColor());
+    const [randomColorA, setRandomColorA] = useState(getRandomColor());
+    const [randomColorB, setRandomColorB] = useState(getRandomColor());
+    const [randomColorC, setRandomColorC] = useState(getRandomColor());
+    const [grid, setGrid] = useState<GridType>();
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [isRecalculatingGrid, setIsRecalculatingGrid] = useState(false);
 
-    const grid = [
-        [{ color: 'red' }, { color: 'red' }, { color: 'red' }],
-        [{ color: 'red' }, { color: 'red' }, { color: 'red' }],
-        [{ color: 'red' }, { color: 'red' }, { color: 'red' }],
-    ];
-    const cellPosition = { row: 0, col: 0};
-    const [numberOfRows, setNumberOfRows] = useState(1);
-    const [numberOfCols, setNumberOfCols] = useState(1);
-    const [floodColor, setFloodColor] = useState('#0000FF');
-    const [randomColorA, setRandomColorA] = useState('#0000FF');
-    const [randomColorB, setRandomColorB] = useState('#0000FF');
-    const [randomColorC, setRandomColorC] = useState('#0000FF');
-
-    const getRandomColor = () => {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+    const initializeGrid = (colorA: CellColor, colorB: CellColor, colorC: CellColor): GridType => {
+        const newGrid = [];
+        for (let i = 0; i < numberOfRows; i++) {
+            const row = [];
+            for (let j = 0; j < numberOfCols; j++) {
+                row.push({ color: getRandomColor() });
+            }
+            newGrid.push(row);
         }
-        return color;
+        return newGrid;
     };
 
     useEffect(() => {
-        setFloodColor(getRandomColor());
-        setRandomColorA(getRandomColor());
-        setRandomColorB(getRandomColor());
-        setRandomColorC(getRandomColor());
-    }, []);
+        if (!isInitialized && numberOfRows && numberOfCols && randomColorA && randomColorB && randomColorC) {
+            setGrid(initializeGrid({color: randomColorA}, {color: randomColorB}, {color: randomColorC}));
+            setIsInitialized(true);
+        }
+    }, [numberOfRows, numberOfCols, randomColorA, randomColorB, randomColorC]);
+
+    useEffect(() => {
+        if (isRecalculatingGrid && numberOfRows && numberOfCols && randomColorA && randomColorB && randomColorC) {
+            setGrid(initializeGrid({color: randomColorA}, {color: randomColorB}, {color: randomColorC}));
+            setIsRecalculatingGrid(false);
+        }
+    }, [isRecalculatingGrid, numberOfRows, numberOfCols, randomColorA, randomColorB, randomColorC]);
 
 
     return (
@@ -113,13 +131,20 @@ const Main = () => {
                         }}
                     />
                 </div>
-                <div className="flex flex-col w-5/6 h-full items-center justify-center bg-blue-300" />
+                <div className="flex flex-col w-5/6 h-full items-center justify-center bg-blue-300">
+                    <Grid
+                        setCoordinates={(coordinates: CellPosition) => {
+                            const { row, col } = coordinates;
+                            console.log('Cell position', row, col);
+                        }}
+                        grid={grid}
+                    />
+                </div>
             </div>
-            <InitializeBtn
-                initialize={getFloodedGrid}
-                grid={grid}
-                cellPosition={cellPosition}
-                newColor={{color: floodColor}}
+            <CalculateGridBtn
+                setCalculateFlag={() => {
+                    setIsRecalculatingGrid(true);
+                }}
             />
         </main>
     );
