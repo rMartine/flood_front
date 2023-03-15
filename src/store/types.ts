@@ -18,8 +18,14 @@ export type InitializeFunctionParams = {
     cellPosition: CellPosition;
     newColor: CellColor;
 }
-// Declarre a function interface named InitializeFunction which arguments conform to the InitializeFunctionParams type and returns a Promise of type string
+
 export type InitializeFunction = (params: InitializeFunctionParams) => Promise<string>;
+
+export interface CustomNumericalInputProps {
+    tag: string;
+    setValue: (value: number) => void;
+    value: number;
+}
 
 export interface InitializeBtnProps {
     initialize: InitializeFunction;

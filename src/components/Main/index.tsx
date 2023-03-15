@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import InitializeBtn from '../InitializeBtn';
+import CustomNumericalInput from '../CustomNumericalInput';
 import { InitializeFunction, InitializeFunctionParams } from '../../store/types';
 
 const Main = () => {
@@ -38,9 +39,27 @@ const Main = () => {
     const cellPosition = { row: 0, col: 0};
     const newColor = {color: 'blue'};
 
+    const [numberOfRows, setNumberOfRows] = useState(1);
+    const [numberOfCols, setNumberOfCols] = useState(1);
+
     return (
         <main className="grow h-4/6 w-full items-center justify-center bg-gray-100">
-            <div className="main-text">Content</div>
+            <div className="flex flex-row items-center justify-center">
+                <CustomNumericalInput
+                    tag="Number of rows"
+                    setValue={(value: number) => {
+                        setNumberOfRows(value);
+                    }}
+                    value={numberOfRows}
+                />
+                <CustomNumericalInput
+                    tag="Number of columns"
+                    setValue={(value: number) => {
+                        setNumberOfCols(value);
+                    }}
+                    value={numberOfCols}
+                />
+            </div>
             <InitializeBtn
                 initialize={getFloodedGrid}
                 grid={grid}
