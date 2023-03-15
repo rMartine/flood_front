@@ -39,7 +39,7 @@ const Main = () => {
     const newColor = {color: 'blue'};
 
     return (
-        <div className="main">
+        <main className="grow h-4/6 w-full items-center justify-center bg-gray-100">
             <div className="main-text">Content</div>
             <InitializeBtn
                 initialize={getFloodedGrid}
@@ -47,7 +47,7 @@ const Main = () => {
                 cellPosition={cellPosition}
                 newColor={newColor}
             />
-        </div>
+        </main>
     );
 };
 
